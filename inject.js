@@ -223,14 +223,26 @@ var faceItHelper = {
 		}
 		var joined_players = angular.element('.queue--sm').scope().quickMatch.joined_players;
 		$('.modal-dialog__actions').append('<hr><strong class="text-center">Players in this room</strong><ul id="player_list" class="list-unstyled"></ul>');
+		var premades = {};
 		for (var i = 0; i < joined_players.length; i++) {
 			$.get('https://api.faceit.com/api/users/'+joined_players[i], function(e) {
+				// This is useless until the player objects have been built - leaving here for future use
+				// This will stop the party icon showing for solo players
+				if (!premades[e.payload.active_team_id]) {
+				    premades[e.payload.active_team_id] = [];
+				}
+				premades[e.payload.active_team_id].append(e.payload.guid);
+				// TODO: Build array of player objects, then run this on each after?
+				
+				// TODO: Restyle what this looks like on client
 				var list = $('<li/>').addClass("text-left")
 					.append($('<i/>', { id: e.payload.guid, class: "icon-ic_state_checkmark_48px icon-md" }))
 					.append('<img src="https://cdn.faceit.com/frontend/231/assets/images/flags/'+e.payload.country.toUpperCase()+'.png">')
 					.append('<img src="https://cdn.faceit.com/frontend/231/assets/images/skill-icons/skill_level_'+e.payload.csgo_skill_level_label+'_sm.png">')
 					.append($('<strong/>', {id: e.payload.guid , text: e.payload.nickname}))
-					.append(' - ELO: '+ e.payload.games.csgo.faceit_elo+' - '+ e.payload.membership.type +'</li>');
+					.append(' - ELO: '+ e.payload.games.csgo.faceit_elo+' - '+ e.payload.membership.type +'</li>')
+					// Temp party indicator - uses first 6 chars of team id as hex colour
+					.append('<i class="icon-ic_verified_user_black_48px" style="color:'+ e.payload.active_team_id.substring(0,6) +'">');
 
 				$('#player_list').append(list);
 			}, "json");
