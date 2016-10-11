@@ -425,15 +425,15 @@ var eventStage = {
 		if(isCurrentUserVoting && faceItHelper.userSettings.bAutoVeto) {
 			// Perform ban map
 			setTimeout(function() {
-				for(i=faceItHelper.userSettings.arrayMapOrder.length - 1;i > 0 - 1;i--) {
-		            var bSelected = false;
-		            $(".match-vote-item__name").each(function() {
-		                if ($(this).text() == faceItHelper.userSettings.arrayMapOrder[i] && $(this).parent().find("button").is(":enabled") && !bSelected) {
-		                    $(this).parent().find("button").click();
-		                    bSelected = true;
-		                    faceItHelper.sendNotification('<h3>Auto-veto has <span class="text-danger">banned</span> <strong>'+faceItHelper.userSettings.arrayMapOrder[i] + '</strong></h3>');
-		                    debug.log("Auto-veto has banned map " + faceItHelper.userSettings.arrayMapOrder[i]);
-		                }
+				var leastToMost = faceItHelper.userSettings.arrayMapOrder.reverse();
+				for(var i=0;i<leastToMost.length;i++) {
+		            $(".match-voting ul li").each(function() {
+						if ( $(".match-vote-item__name", this).text() == leastToMost[i] && !$(this).hasClass("match-vote-item--dropped") ) {
+							$("button", this).click();
+							faceItHelper.sendNotification('<h3>Auto-veto has <span class="text-danger">banned</span> <strong>'+leastToMost[i]+'</strong></h3>');
+							debug.log("Auto-veto has banned map " + leastToMost[i]);
+							break;
+						}
 		            });
 	        	}
 	        }, 1000);
