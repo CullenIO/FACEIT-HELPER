@@ -242,7 +242,7 @@ var faceItHelper = {
 					.append($('<strong/>', {id: e.payload.guid , text: e.payload.nickname}))
 					.append(' - ELO: '+ e.payload.games.csgo.faceit_elo+' - '+ e.payload.membership.type +'</li>')
 					// Temp party indicator - uses first 6 chars of team id as hex colour
-					.append('<i class="icon-ic_verified_user_black_48px" style="color:'+ e.payload.active_team_id.substring(0,6) +'">');
+					.append('<i/>', { class: "icon-ic_verified_user_black_48px", style: "color:"+e.payload.active_team_id.substring(0,6) });
 
 				$('#player_list').append(list);
 			}, "json");
