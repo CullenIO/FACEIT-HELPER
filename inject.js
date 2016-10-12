@@ -64,7 +64,7 @@ var faceItHelper = {
 			action: function() {
 				faceItHelper.userSettings.bPremium = !faceItHelper.userSettings.bPremium;
 				localStorage.bPremium = faceItHelper.userSettings.bPremium;
-				faceItHelper.sendNotification('<span class="text-info"><strong>Setting will be applied and effective on next page refresh...<br>(Ctrl+R/F5)</strong><br></span>');
+				faceItHelper.pageRefresh();
 
 				var txtState = faceItHelper.userSettings.bPremium ? $('<span/>',{class:"text-success",text:"Enabled"}) : $('<span/>',{class:"text-danger",text:"Disabled"});
 			    $("#sPremium").html(txtState);
